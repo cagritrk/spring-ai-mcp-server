@@ -1,0 +1,11 @@
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+  application:
+    name: spring-ai-mcp
+  ai:
+    mcp:
+      server:
+        name: cagritrk-inmemory-data-mcp-server
+        version: 0.1.0

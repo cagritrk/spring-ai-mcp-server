@@ -4,6 +4,7 @@ import com.cagriturk.spring_ai_mcp.model.Person;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -195,6 +196,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_create_person",
+        description = "Create a new person record in the in-memory store."
+    )
     public Person createPerson(Person personData) {
         if (personData == null) {
             throw new IllegalArgumentException("Person data cannot be null");
@@ -220,6 +225,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_get_person_by_id",
+        description = "Retrieve a person record by ID from the in-memory store."
+    )
     public Optional<Person> getPersonById(int id) {
         Person person = personStore.get(id);
         log.debug("Retrieved person by ID {}: {}", id, person);
@@ -230,6 +239,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_get_all_persons",
+        description = "Retrieve all person records from the in-memory store."
+    )
     public List<Person> getAllPersons() {
         // Return an unmodifiable view of the values
         List<Person> allPersons = personStore.values().stream().toList();
@@ -241,6 +254,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_update_person",
+        description = "Update an existing person record by ID in the in-memory store."
+    )
     public boolean updatePerson(int id, Person updatedPersonData) {
          if (updatedPersonData == null) {
             throw new IllegalArgumentException("Updated person data cannot be null");
@@ -269,6 +286,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_delete_person",
+        description = "Delete a person record by ID from the in-memory store."
+    )
     public boolean deletePerson(int id) {
         boolean removed = personStore.remove(id) != null;
         log.debug("Delete attempt for ID {}: {}", id, removed ? "Successful" : "Failed (Not Found)");
@@ -279,6 +300,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_search_by_job_title",
+        description = "Search for persons by job title in the in-memory store."
+    )
     public List<Person> searchByJobTitle(String jobTitleQuery) {
         if (jobTitleQuery == null || jobTitleQuery.isBlank()) {
             log.debug("Search by job title skipped due to blank query.");
@@ -296,6 +321,10 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_filter_by_sex",
+        description = "Filters Persons by sex (case-insensitive)."
+    )
     public List<Person> filterBySex(String sex) {
         if (sex == null || sex.isBlank()) {
              log.debug("Filter by sex skipped due to blank filter.");
@@ -312,9 +341,13 @@ public class PersonServiceImpl implements PersonService {
      * {@inheritDoc}
      */
     @Override
+    @Tool(
+        name = "ps_filter_by_age",
+        description = "Filters Persons by age."
+    )
     public List<Person> filterByAge(int age) {
          if (age < 0) {
-             log.debug("Filter by age skipped due to negative age: {}", age);
+            log.debug("Filter by age skipped due to negative age: {}", age);
             return Collections.emptyList(); // Or throw IllegalArgumentException based on requirements
         }
         List<Person> results = personStore.values().stream()
